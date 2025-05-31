@@ -8,9 +8,9 @@ const Header = () => {
         <nav>
           <Link to="/" className="px-4 hover:text-gray-400">Home</Link>
           <Link to="/about" className="px-4 hover:text-gray-400">About</Link>
+          <Link to="/blog" className="px-4 hover:text-gray-400">Blog</Link>
           <Link to="/projects" className="px-4 hover:text-gray-400">Projects</Link>
           <Link to="/contact" className="px-4 hover:text-gray-400">Contact</Link>
-          <Link to="/blog" className="px-4 hover:text-gray-400">Blog</Link>
         </nav>
       </div>
     </header>
