@@ -7,6 +7,7 @@ import ProjectsPage from "./components/ProjectsPage";
 import ContactPage from "./components/ContactPage";
 import BlogPage from "./components/BlogPage";
 import ThankYouPage from "./components/ThankYouPage";
+import NotFoundPage from "./components/NotFoundPage";
 function App() {
   return (
     <Router>
