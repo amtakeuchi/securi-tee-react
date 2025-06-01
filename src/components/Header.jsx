@@ -19,12 +19,7 @@ const Header = () => {
           <Link to="/blog" className="px-4 hover:text-gray-400">Blog</Link>
           <Link to="/projects" className="px-4 hover:text-gray-400">Projects</Link>
           <Link to="/contact" className="px-4 hover:text-gray-400">Contact</Link>
-          <button
-            onClick={toggleTheme}
-            className="ml-4 px-2 py-1 border rounded hover:bg-gray-700"
-          >
-            {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-          </button>
+          <Link to="/blog" className="px-4 hover:text-gray-400">Blog</Link>
         </nav>
       </div>
     </header>

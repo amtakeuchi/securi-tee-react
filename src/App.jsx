@@ -8,6 +8,7 @@ import ContactPage from "./components/ContactPage";
 import BlogPage from "./components/BlogPage";
 import ThankYouPage from "./components/ThankYouPage";
 import NotFoundPage from "./components/NotFoundPage";
+
 function App() {
   return (
     <Router>
@@ -20,8 +21,8 @@ function App() {
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog" element={<ThankYouPage />} />
-            <Route path="/blog" element={<NotFoundPage />} />
+            <Route path="/thank-you" element={<ThankYouPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
         <Footer />
