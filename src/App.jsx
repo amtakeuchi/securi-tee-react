@@ -8,6 +8,8 @@ import ContactPage from "./components/ContactPage";
 import BlogPage from "./components/BlogPage";
 import ThankYouPage from "./components/ThankYouPage";
 import NotFoundPage from "./components/NotFoundPage";
+import BlogPostPage from "./components/BlogPostPage";
+import ProjectPage from "./components/ProjectPage";
 
 function App() {
   return (
@@ -19,8 +21,10 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/projects/:slug" element={<ProjectPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/thank-you" element={<ThankYouPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
