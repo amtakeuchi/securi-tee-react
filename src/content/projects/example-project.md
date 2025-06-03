@@ -1,7 +1,8 @@
-# Example Project Post
+# Example Project Title
 
-This is a sample project post content written in markdown.
+This is a sample description of your project written in markdown.
 
-## Subheader
+- Feature 1
+- Feature 2
 
-More markdown content here.
+![Screenshot](../images/example-image.png)
