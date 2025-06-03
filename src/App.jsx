@@ -3,9 +3,9 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomePage from "./components/HomePage";
 import AboutPage from "./components/AboutPage";
-import ProjectsPage from "./components/ProjectsPage";
+import ProjectListPage from "./components/ProjectListPage";
 import ContactPage from "./components/ContactPage";
-import BlogPage from "./components/BlogPage";
+import BlogListPage from "./components/BlogListPage";
 import ThankYouPage from "./components/ThankYouPage";
 import NotFoundPage from "./components/NotFoundPage";
 import BlogPostPage from "./components/BlogPostPage";
@@ -20,10 +20,10 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/projects" element={<ProjectListPage />} />
             <Route path="/projects/:slug" element={<ProjectPage />} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog" element={<BlogListPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/thank-you" element={<ThankYouPage />} />
             <Route path="*" element={<NotFoundPage />} />

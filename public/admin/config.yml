@@ -6,24 +6,24 @@ media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
 
 collections:
-  - name: "projects"
-    label: "Projects"
-    folder: "src/projects"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Date", name: "date", widget: "datetime" }
-      - { label: "Thumbnail", name: "thumbnail", widget: "image" }
-      - { label: "Body", name: "body", widget: "markdown" }
-  
   - name: "blog"
     label: "Blog Posts"
-    folder: "src/blog"
+    folder: "public/blog-posts"
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Date", name: "date", widget: "datetime" }
-      - { label: "Thumbnail", name: "thumbnail", widget: "image" }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      - {label: "Featured Image", name: "thumbnail", widget: "image", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "projects"
+    label: "Projects"
+    folder: "public/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Featured Image", name: "thumbnail", widget: "image", required: false}
+      - {label: "Technologies", name: "technologies", widget: "list"}
+      - {label: "Body", name: "body", widget: "markdown"}
