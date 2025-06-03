@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: amtakeuchi/securi-tee-react
+  name: git-gateway
   branch: main
 
 media_folder: "public/images/uploads"
@@ -10,6 +9,17 @@ collections:
   - name: "projects"
     label: "Projects"
     folder: "src/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Thumbnail", name: "thumbnail", widget: "image" }
+      - { label: "Body", name: "body", widget: "markdown" }
+  
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "src/blog"
     create: true
     slug: "{{slug}}"
     fields:

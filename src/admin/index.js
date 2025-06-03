@@ -1,4 +1,3 @@
-import CMS from "netlify-cms-app";
-import config from "./config.yml";
+import CMS from "decap-cms-app";
 
-CMS.init({ config });
+CMS.init();
