@@ -24,6 +24,24 @@ This Flask web app combines
 
 The result is a clean, lightweight web dashboard that shows me the latest threat intelligence and financial risk signals in near real-time, tailored for me.
 
+**🔧 Key Features & Technologies**
+
+\-Python (3.12) 
+
+\-Flask web framework for handling routing, rendering, and server-side logic. 
+
+\-Feedparser for parsing traditional RSS and Atom feeds. 
+
+\-Requests + BeautifulSoup for HTML web scraping (Bloomberg and other non-RSS content).
+
+\-Flask-Caching to reduce redundant requests and speed up page loads by caching fetched articles for 10 minutes. 
+
+\-Asynchronous fetching with concurrent.futures.
+
+\-ThreadPoolExecutor to parallelize feed and scraper requests without blocking the web server. 
+
+
+
 **📊 Why This Matters**
 
 In cybersecurity, timing is everything. Getting a zero-day disclosure, nation-state attribution, or critical infrastructure ransomware report even 30 minutes before your competitors can make all the difference in patching, escalation, or response prep. This tool helps me stay a step ahead without the noise.
