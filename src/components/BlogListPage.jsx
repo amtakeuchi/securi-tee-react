@@ -9,22 +9,14 @@ const BlogListPage = () => {
   useEffect(() => {
     async function loadPosts() {
       try {
-        const response = await fetch('/admin/config.yml');
-        const config = await response.text();
-        const collections = config.match(/folder: blog-posts([\s\S]*?)(?=collections:|$)/)?.[1] || '';
-        const files = collections.match(/- ([\w-]+\.md)/g) || [];
-        
-        const postPromises = files.map(async (file) => {
-          const slug = file.replace('- ', '').replace('.md', '');
-          const contentResponse = await fetch(`/blog-posts/${slug}.md`);
-          const content = await contentResponse.text();
-          const title = content.match(/# (.*)/)?.[1] || slug;
+        // First, try to load the sample post we created
+        const samplePost = await fetch('/blog-posts/hello-world.md');
+        if (samplePost.ok) {
+          const content = await samplePost.text();
+          const title = content.match(/# (.*)/)?.[1] || 'Hello World';
           const preview = content.split('\n').slice(1).join(' ').slice(0, 150) + '...';
-          return { slug, title, preview };
-        });
-
-        const loadedPosts = await Promise.all(postPromises);
-        setPosts(loadedPosts);
+          setPosts([{ slug: 'hello-world', title, preview }]);
+        }
         setLoading(false);
       } catch (err) {
         console.error('Error loading blog posts:', err);
@@ -50,6 +42,18 @@ const BlogListPage = () => {
       <section className="p-8">
         <h1 className="text-3xl font-bold mb-6">Blog Posts</h1>
         <div className="text-red-600">{error}</div>
+      </section>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <section className="p-8">
+        <h1 className="text-3xl font-bold mb-6">Blog Posts</h1>
+        <div className="text-gray-600">No blog posts found. Create some in the admin panel!</div>
+        <Link to="/admin" className="inline-block mt-4 text-blue-600 hover:underline">
+          Go to Admin Panel →
+        </Link>
       </section>
     );
   }

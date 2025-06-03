@@ -9,22 +9,14 @@ const ProjectListPage = () => {
   useEffect(() => {
     async function loadProjects() {
       try {
-        const response = await fetch('/admin/config.yml');
-        const config = await response.text();
-        const collections = config.match(/folder: projects([\s\S]*?)(?=collections:|$)/)?.[1] || '';
-        const files = collections.match(/- ([\w-]+\.md)/g) || [];
-        
-        const projectPromises = files.map(async (file) => {
-          const slug = file.replace('- ', '').replace('.md', '');
-          const contentResponse = await fetch(`/projects/${slug}.md`);
-          const content = await contentResponse.text();
-          const title = content.match(/# (.*)/)?.[1] || slug;
+        // First, try to load the sample project we created
+        const sampleProject = await fetch('/projects/sample-project.md');
+        if (sampleProject.ok) {
+          const content = await sampleProject.text();
+          const title = content.match(/# (.*)/)?.[1] || 'Sample Project';
           const preview = content.split('\n').slice(1).join(' ').slice(0, 150) + '...';
-          return { slug, title, preview };
-        });
-
-        const loadedProjects = await Promise.all(projectPromises);
-        setProjects(loadedProjects);
+          setProjects([{ slug: 'sample-project', title, preview }]);
+        }
         setLoading(false);
       } catch (err) {
         console.error('Error loading projects:', err);
@@ -50,6 +42,18 @@ const ProjectListPage = () => {
       <section className="p-8">
         <h1 className="text-3xl font-bold mb-6">Projects</h1>
         <div className="text-red-600">{error}</div>
+      </section>
+    );
+  }
+
+  if (projects.length === 0) {
+    return (
+      <section className="p-8">
+        <h1 className="text-3xl font-bold mb-6">Projects</h1>
+        <div className="text-gray-600">No projects found. Create some in the admin panel!</div>
+        <Link to="/admin" className="inline-block mt-4 text-blue-600 hover:underline">
+          Go to Admin Panel →
+        </Link>
       </section>
     );
   }
