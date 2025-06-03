@@ -9,14 +9,32 @@ const BlogListPage = () => {
   useEffect(() => {
     async function loadPosts() {
       try {
-        // First, try to load the sample post we created
-        const samplePost = await fetch('/blog-posts/hello-world.md');
-        if (samplePost.ok) {
-          const content = await samplePost.text();
-          const title = content.match(/# (.*)/)?.[1] || 'Hello World';
-          const preview = content.split('\n').slice(1).join(' ').slice(0, 150) + '...';
-          setPosts([{ slug: 'hello-world', title, preview }]);
+        // Get the list of all files in the blog-posts directory
+        const response = await fetch('/.netlify/functions/list-content?type=blog-posts');
+        if (!response.ok) {
+          throw new Error('Failed to fetch blog posts list');
         }
+        const files = await response.json();
+        
+        // Load each post's content
+        const postPromises = files.map(async (filename) => {
+          const slug = filename.replace('.md', '');
+          const contentResponse = await fetch(`/blog-posts/${filename}`);
+          if (!contentResponse.ok) {
+            console.warn(`Failed to load post: ${filename}`);
+            return null;
+          }
+          const content = await contentResponse.text();
+          const title = content.match(/# (.*)/)?.[1] || slug;
+          const preview = content.split('\n').slice(1).join(' ').slice(0, 150) + '...';
+          return { slug, title, preview };
+        });
+
+        const loadedPosts = (await Promise.all(postPromises))
+          .filter(post => post !== null)
+          .sort((a, b) => b.slug.localeCompare(a.slug)); // Sort by filename descending (assumes date-based filenames)
+
+        setPosts(loadedPosts);
         setLoading(false);
       } catch (err) {
         console.error('Error loading blog posts:', err);

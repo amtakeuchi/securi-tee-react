@@ -9,14 +9,32 @@ const ProjectListPage = () => {
   useEffect(() => {
     async function loadProjects() {
       try {
-        // First, try to load the sample project we created
-        const sampleProject = await fetch('/projects/sample-project.md');
-        if (sampleProject.ok) {
-          const content = await sampleProject.text();
-          const title = content.match(/# (.*)/)?.[1] || 'Sample Project';
-          const preview = content.split('\n').slice(1).join(' ').slice(0, 150) + '...';
-          setProjects([{ slug: 'sample-project', title, preview }]);
+        // Get the list of all files in the projects directory
+        const response = await fetch('/.netlify/functions/list-content?type=projects');
+        if (!response.ok) {
+          throw new Error('Failed to fetch projects list');
         }
+        const files = await response.json();
+        
+        // Load each project's content
+        const projectPromises = files.map(async (filename) => {
+          const slug = filename.replace('.md', '');
+          const contentResponse = await fetch(`/projects/${filename}`);
+          if (!contentResponse.ok) {
+            console.warn(`Failed to load project: ${filename}`);
+            return null;
+          }
+          const content = await contentResponse.text();
+          const title = content.match(/# (.*)/)?.[1] || slug;
+          const preview = content.split('\n').slice(1).join(' ').slice(0, 150) + '...';
+          return { slug, title, preview };
+        });
+
+        const loadedProjects = (await Promise.all(projectPromises))
+          .filter(project => project !== null)
+          .sort((a, b) => b.slug.localeCompare(a.slug));
+
+        setProjects(loadedProjects);
         setLoading(false);
       } catch (err) {
         console.error('Error loading projects:', err);
