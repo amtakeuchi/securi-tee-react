@@ -5,39 +5,20 @@ import ReactMarkdown from "react-markdown";
 const BlogPostPage = () => {
   const { slug } = useParams();
   const [content, setContent] = useState("");
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function loadContent() {
-      try {
-        const response = await fetch(`/blog-posts/${slug}.md`);
-        if (!response.ok) {
-          throw new Error(`Failed to load blog post: ${response.statusText}`);
-        }
-        const text = await response.text();
-        setContent(text);
-      } catch (err) {
-        console.error("Error loading blog post:", err);
-        setError("Failed to load blog post. Please try again later.");
-      }
-    }
-
-    loadContent();
+    fetch(`/content/blog/${slug}.md`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Post not found");
+        return res.text();
+      })
+      .then(setContent)
+      .catch(() => setContent("# 404\nPost not found."));
   }, [slug]);
 
-  if (error) {
-    return (
-      <section className="p-8">
-        <div className="text-red-600">{error}</div>
-      </section>
-    );
-  }
-
   return (
-    <section className="p-8">
-      <article className="prose prose-lg max-w-none">
-        <ReactMarkdown>{content}</ReactMarkdown>
-      </article>
+    <section className="p-8 prose lg:prose-xl max-w-screen-md mx-auto">
+      <ReactMarkdown>{content}</ReactMarkdown>
     </section>
   );
 };
