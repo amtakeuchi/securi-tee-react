@@ -1,113 +1,26 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
-const BlogListPage = () => {
-  const [posts, setPosts] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+const BlogPostPage = () => {
+  const { slug } = useParams();
+  const [content, setContent] = useState("");
 
   useEffect(() => {
-    async function loadPosts() {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        console.log('Fetching blog posts...');
-        const response = await fetch('/.netlify/functions/list-content?type=blog-posts');
-        console.log('Response status:', response.status);
-        
-        if (!response.ok) {
-          const text = await response.text();
-          console.error('Error response:', text);
-          throw new Error(`Failed to fetch blog posts: ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        console.log('Received posts:', data);
-        setPosts(data);
-      } catch (err) {
-        console.error('Error loading blog posts:', err);
-        setError(err.message || 'Failed to load blog posts');
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadPosts();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="p-8">
-        <h1 className="text-4xl font-bold mb-8">Blog Posts</h1>
-        <div className="space-y-8">
-          {[1, 2, 3].map((n) => (
-            <div key={n} className="animate-pulse">
-              <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-8">
-        <h1 className="text-4xl font-bold mb-8">Blog Posts</h1>
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-          <p className="font-bold">Error Loading Posts</p>
-          <p>{error}</p>
-        </div>
-      </div>
-    );
-  }
+    fetch(`/content/blog/${slug}.md`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Post not found");
+        return res.text();
+      })
+      .then(setContent)
+      .catch(() => setContent("# 404\nPost not found."));
+  }, [slug]);
 
   return (
-    <div className="p-8">
-      <h1 className="text-4xl font-bold mb-8">Blog Posts</h1>
-      {posts.length === 0 ? (
-        <p className="text-gray-600">No blog posts found.</p>
-      ) : (
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => (
-            <Link
-              key={post.filename}
-              to={`/blog/${post.filename.replace('.md', '')}`}
-              className="block bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
-            >
-              {post.thumbnail && (
-                <div className="h-48 rounded-t-lg overflow-hidden">
-                  <img
-                    src={post.thumbnail}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      console.error('Error loading thumbnail:', post.thumbnail);
-                      e.target.style.display = 'none';
-                    }}
-                  />
-                </div>
-              )}
-              <div className="p-6">
-                <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
-                {post.date && (
-                  <p className="text-gray-600 text-sm mb-2">
-                    {new Date(post.date).toLocaleDateString()}
-                  </p>
-                )}
-                {post.description && (
-                  <p className="text-gray-600">{post.description}</p>
-                )}
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
+    <section className="p-8 prose lg:prose-xl max-w-screen-md mx-auto">
+      <ReactMarkdown>{content}</ReactMarkdown>
+    </section>
   );
 };
 
-export default BlogListPage; 
+export default BlogPostPage;
