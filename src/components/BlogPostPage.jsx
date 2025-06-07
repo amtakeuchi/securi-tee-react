@@ -117,7 +117,7 @@ const BlogPostPage = () => {
           />
         )}
         {post.frontmatter.title && (
-          <h1 className="text-4xl font-bold mb-4">{post.frontmatter.title}</h1>
+          <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">{post.frontmatter.title}</h1>
         )}
         <div className="flex items-center gap-4 text-gray-600 dark:text-gray-400 mb-8">
           {post.frontmatter.date && (
@@ -151,10 +151,10 @@ const BlogPostPage = () => {
                 <p {...props} className="mb-4" />
               ),
               h2: ({node, ...props}) => (
-                <h2 {...props} className="text-2xl font-bold mt-8 mb-4" />
+                <h2 {...props} className="text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-gray-100" />
               ),
               h3: ({node, ...props}) => (
-                <h3 {...props} className="text-xl font-bold mt-6 mb-3" />
+                <h3 {...props} className="text-xl font-bold mt-6 mb-3 text-gray-900 dark:text-gray-100" />
               ),
               ul: ({node, ...props}) => (
                 <ul {...props} className="list-disc pl-6 mb-4" />
