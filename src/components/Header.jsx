@@ -1,26 +1,32 @@
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-import { ThemeContext } from '../context/ThemeContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Header = () => {
-  const { theme, setTheme } = useContext(ThemeContext);
-
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
-  };
-
+  const { isDarkMode, toggleTheme } = useTheme();
+  
   return (
-    <header className="bg-gray-900 text-white p-6">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Securi-Tee</h1>
-        <nav className="flex items-center">
-          <Link to="/" className="px-4 hover:text-gray-400">Home</Link>
-          <Link to="/about" className="px-4 hover:text-gray-400">About</Link>
-          <Link to="/blog" className="px-4 hover:text-gray-400">Blog</Link>
-          <Link to="/projects" className="px-4 hover:text-gray-400">Projects</Link>
-          <Link to="/contact" className="px-4 hover:text-gray-400">Contact</Link>
-        </nav>
-      </div>
+    <header className="bg-white dark:bg-gray-800 shadow-md">
+      <nav className="container mx-auto px-6 py-4">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-8">
+            <Link to="/" className="text-2xl font-bold text-gray-800 dark:text-white">
+              SecuriTee
+            </Link>
+            <Link to="/blog" className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
+              Blog
+            </Link>
+            <Link to="/projects" className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
+              Projects
+            </Link>
+            <Link to="/about" className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
+              About
+            </Link>
+            <Link to="/contact" className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
+              Contact
+            </Link>
+          </div>
+        </div>
+      </nav>
     </header>
   );
 };
