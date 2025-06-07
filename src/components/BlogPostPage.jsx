@@ -1,10 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 const BlogPostPage = () => {
   const { slug } = useParams();
-  const [content, setContent] = useState("");
+  const [post, setPost] = useState({ content: "", frontmatter: {} });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -20,7 +22,22 @@ const BlogPostPage = () => {
         }
         
         const text = await response.text();
-        setContent(text);
+        
+        // Parse frontmatter
+        const frontmatterMatch = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+        if (frontmatterMatch) {
+          const [, frontmatterText, content] = frontmatterMatch;
+          const frontmatter = {};
+          frontmatterText.split('\n').forEach(line => {
+            const [key, ...valueParts] = line.split(':');
+            if (key && valueParts.length) {
+              frontmatter[key.trim()] = valueParts.join(':').trim();
+            }
+          });
+          setPost({ content, frontmatter });
+        } else {
+          setPost({ content: text, frontmatter: {} });
+        }
       } catch (err) {
         console.error('Error loading blog post:', err);
         setError(err.message || 'Failed to load blog post');
@@ -59,8 +76,64 @@ const BlogPostPage = () => {
   }
 
   return (
-    <article className="p-8 prose lg:prose-xl max-w-screen-md mx-auto">
-      <ReactMarkdown>{content}</ReactMarkdown>
+    <article className="p-8 max-w-screen-md mx-auto">
+      {post.frontmatter.thumbnail && (
+        <img
+          src={post.frontmatter.thumbnail}
+          alt={post.frontmatter.title || "Blog post thumbnail"}
+          className="w-full h-64 object-cover rounded-lg mb-8"
+        />
+      )}
+      {post.frontmatter.title && (
+        <h1 className="text-4xl font-bold mb-4">{post.frontmatter.title}</h1>
+      )}
+      {post.frontmatter.date && (
+        <p className="text-gray-600 mb-8">
+          {new Date(post.frontmatter.date).toLocaleDateString()}
+        </p>
+      )}
+      <div className="prose lg:prose-xl">
+        <ReactMarkdown 
+          remarkPlugins={[remarkGfm]} 
+          rehypePlugins={[rehypeRaw]}
+          components={{
+            img: ({node, ...props}) => (
+              <img {...props} className="w-full rounded-lg my-8" />
+            ),
+            a: ({node, ...props}) => (
+              <a {...props} className="text-blue-600 hover:text-blue-800" />
+            ),
+            p: ({node, ...props}) => (
+              <p {...props} className="mb-4" />
+            ),
+            h2: ({node, ...props}) => (
+              <h2 {...props} className="text-2xl font-bold mt-8 mb-4" />
+            ),
+            h3: ({node, ...props}) => (
+              <h3 {...props} className="text-xl font-bold mt-6 mb-3" />
+            ),
+            ul: ({node, ...props}) => (
+              <ul {...props} className="list-disc pl-6 mb-4" />
+            ),
+            ol: ({node, ...props}) => (
+              <ol {...props} className="list-decimal pl-6 mb-4" />
+            ),
+            li: ({node, ...props}) => (
+              <li {...props} className="mb-2" />
+            ),
+            blockquote: ({node, ...props}) => (
+              <blockquote {...props} className="border-l-4 border-gray-200 pl-4 italic my-4" />
+            ),
+            code: ({node, inline, ...props}) => (
+              inline ? 
+                <code {...props} className="bg-gray-100 rounded px-1" /> :
+                <code {...props} className="block bg-gray-100 p-4 rounded my-4 overflow-auto" />
+            )
+          }}
+        >
+          {post.content}
+        </ReactMarkdown>
+      </div>
     </article>
   );
 };
