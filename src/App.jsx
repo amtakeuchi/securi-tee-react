@@ -11,7 +11,6 @@ import NotFoundPage from "./components/NotFoundPage";
 import BlogPostPage from "./components/BlogPostPage";
 import ProjectPage from "./components/ProjectPage";
 import { ThemeProvider } from './context/ThemeContext';
-import ThemeToggle from './components/ThemeToggle';
 
 function App() {
   return (
@@ -19,7 +18,6 @@ function App() {
       <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
         <Router>
           <Header />
-          <ThemeToggle />
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<HomePage />} />
