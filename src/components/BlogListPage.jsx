@@ -76,7 +76,7 @@ const BlogListPage = () => {
             <Link
               key={post.filename}
               to={`/blog/${post.filename}`}
-              className="block bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
+              className="block bg-white dark:bg-gray-800 hover:bg-teal-50 dark:hover:bg-teal-dark/10 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border border-transparent hover:border-teal-light/30"
             >
               {post.thumbnail && (
                 <div className="h-48 rounded-t-lg overflow-hidden">
@@ -92,7 +92,7 @@ const BlogListPage = () => {
                 </div>
               )}
               <div className="p-6">
-                <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">{post.title}</h2>
+                <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100 group-hover:text-teal-600 dark:group-hover:text-teal-light">{post.title}</h2>
                 {post.date && (
                   <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
                     {new Date(post.date).toLocaleDateString()}
