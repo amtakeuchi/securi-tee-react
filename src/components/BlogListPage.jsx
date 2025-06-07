@@ -76,13 +76,14 @@ const BlogListPage = () => {
             <Link
               key={post.filename}
               to={`/blog/${post.filename}`}
-              className="block bg-white dark:bg-white hover:bg-teal-50 dark:hover:bg-teal-50 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border border-transparent hover:border-teal-light/30"
+              className="block bg-white dark:bg-white hover:bg-teal-50 dark:hover:bg-teal-50 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border border-transparent hover:border-teal-light/30 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              aria-labelledby={`post-title-${post.filename}`}
             >
               {post.thumbnail && (
                 <div className="h-48 rounded-t-lg overflow-hidden">
                   <img
                     src={post.thumbnail}
-                    alt=""
+                    alt={`Thumbnail for ${post.title}`}
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       console.error('Error loading thumbnail:', post.thumbnail);
@@ -92,14 +93,14 @@ const BlogListPage = () => {
                 </div>
               )}
               <div className="p-6">
-                <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-900 group-hover:text-teal-600">{post.title}</h2>
+                <h2 id={`post-title-${post.filename}`} className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-900 group-hover:text-teal-600">{post.title}</h2>
                 {post.date && (
-                  <p className="text-gray-600 dark:text-gray-600 text-sm mb-2">
+                  <p className="text-gray-700 dark:text-gray-700 text-sm mb-2" aria-label={`Posted on ${new Date(post.date).toLocaleDateString()}`}>
                     {new Date(post.date).toLocaleDateString()}
                   </p>
                 )}
                 {post.description && (
-                  <p className="text-gray-600 dark:text-gray-600">{post.description}</p>
+                  <p className="text-gray-700 dark:text-gray-700">{post.description}</p>
                 )}
               </div>
             </Link>
