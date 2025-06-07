@@ -10,28 +10,33 @@ import ThankYouPage from "./components/ThankYouPage";
 import NotFoundPage from "./components/NotFoundPage";
 import BlogPostPage from "./components/BlogPostPage";
 import ProjectPage from "./components/ProjectPage";
+import { ThemeProvider } from './context/ThemeContext';
+import ThemeToggle from './components/ThemeToggle';
 
 function App() {
   return (
-    <Router>
-      <div className="text-gray-900 bg-white min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/projects" element={<ProjectListPage />} />
-            <Route path="/projects/:slug" element={<ProjectPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/blog" element={<BlogListPage />} />
-            <Route path="/blog/:slug" element={<BlogPostPage />} />
-            <Route path="/thank-you" element={<ThankYouPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </main>
-        <Footer />
+    <ThemeProvider>
+      <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+        <Router>
+          <Header />
+          <ThemeToggle />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/projects" element={<ProjectListPage />} />
+              <Route path="/projects/:slug" element={<ProjectPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/blog" element={<BlogListPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
+              <Route path="/thank-you" element={<ThankYouPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </main>
+          <Footer />
+        </Router>
       </div>
-    </Router>
+    </ThemeProvider>
   );
 }
 
