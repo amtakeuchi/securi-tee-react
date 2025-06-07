@@ -39,13 +39,13 @@ const BlogListPage = () => {
   if (loading) {
     return (
       <div className="p-8">
-        <h1 className="text-4xl font-bold mb-8">Blog Posts</h1>
+        <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100">Blog Posts</h1>
         <div className="space-y-8">
           {[1, 2, 3].map((n) => (
             <div key={n} className="animate-pulse">
-              <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+              <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-2"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
             </div>
           ))}
         </div>
@@ -56,8 +56,8 @@ const BlogListPage = () => {
   if (error) {
     return (
       <div className="p-8">
-        <h1 className="text-4xl font-bold mb-8">Blog Posts</h1>
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+        <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100">Blog Posts</h1>
+        <div className="bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-100 px-4 py-3 rounded">
           <p className="font-bold">Error Loading Posts</p>
           <p>{error}</p>
         </div>
@@ -67,16 +67,16 @@ const BlogListPage = () => {
 
   return (
     <div className="p-8">
-      <h1 className="text-4xl font-bold mb-8">Blog Posts</h1>
+      <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100">Blog Posts</h1>
       {posts.length === 0 ? (
-        <p className="text-gray-600">No blog posts found.</p>
+        <p className="text-gray-600 dark:text-gray-400">No blog posts found.</p>
       ) : (
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <Link
               key={post.filename}
               to={`/blog/${post.filename}`}
-              className="block bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
+              className="block bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
             >
               {post.thumbnail && (
                 <div className="h-48 rounded-t-lg overflow-hidden">
@@ -92,14 +92,14 @@ const BlogListPage = () => {
                 </div>
               )}
               <div className="p-6">
-                <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
+                <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">{post.title}</h2>
                 {post.date && (
-                  <p className="text-gray-600 text-sm mb-2">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
                     {new Date(post.date).toLocaleDateString()}
                   </p>
                 )}
                 {post.description && (
-                  <p className="text-gray-600">{post.description}</p>
+                  <p className="text-gray-600 dark:text-gray-400">{post.description}</p>
                 )}
               </div>
             </Link>
