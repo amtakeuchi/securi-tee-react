@@ -17,10 +17,10 @@ const ContactPage = () => {
         method="POST" 
         data-netlify="true"
         data-netlify-honeypot="bot-field"
-        action="/thank-you"
         className="max-w-xl mx-auto space-y-6"
       >
         <input type="hidden" name="form-name" value="contact" />
+        <input type="hidden" name="success_url" value="/thank-you" />
         <input type="hidden" name="bot-field" />
         
         <div>
