@@ -4,6 +4,33 @@ const ContactPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const form = e.target;
+      const data = new FormData(form);
+      
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString()
+      });
+
+      if (!response.ok) {
+        throw new Error('Form submission failed');
+      }
+
+      // Let Netlify handle the redirect
+      form.submit();
+    } catch (err) {
+      setError('Sorry, there was a problem submitting your form. Please try again.');
+      setSubmitting(false);
+    }
+  };
+
   return (
     <section className="py-20 px-8">
       <h2 className="text-4xl font-bold mb-6 text-center">Contact</h2>
@@ -15,8 +42,9 @@ const ContactPage = () => {
       <form 
         name="contact"
         method="POST"
-        data-netlify="true"
-        data-netlify-honeypot="bot-field"
+        netlify="true"
+        netlify-honeypot="bot-field"
+        onSubmit={handleSubmit}
         className="max-w-xl mx-auto space-y-6"
       >
         <input type="hidden" name="form-name" value="contact" />
