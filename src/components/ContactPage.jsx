@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const ContactPage = () => {
@@ -18,11 +17,10 @@ const ContactPage = () => {
         method="POST" 
         data-netlify="true"
         data-netlify-honeypot="bot-field"
+        action="/#/thank-you"
         className="max-w-xl mx-auto space-y-6"
-        netlify
       >
         <input type="hidden" name="form-name" value="contact" />
-        <input type="hidden" name="success_url" value="/thank-you" />
         <p className="hidden">
           <label>
             Don't fill this out if you're human: <input name="bot-field" />
