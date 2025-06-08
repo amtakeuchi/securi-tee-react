@@ -6,14 +6,20 @@ const ContactPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
+  const encode = (data) => {
+    return Object.keys(data)
+      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+      .join("&");
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     setError(null);
     
-    const form = e.target;
-    const formData = new FormData(form);
-
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    
     try {
       console.log('Submitting form...');
       const response = await fetch('/', {
@@ -21,7 +27,10 @@ const ContactPage = () => {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: new URLSearchParams([...formData, ['form-name', 'contact']]).toString(),
+        body: encode({
+          'form-name': 'contact',
+          ...data
+        })
       });
 
       console.log('Response status:', response.status);
@@ -53,13 +62,19 @@ const ContactPage = () => {
       <form 
         name="contact" 
         method="POST" 
+        netlify="true"
         data-netlify="true"
+        netlify-honeypot="bot-field"
         data-netlify-honeypot="bot-field"
         className="max-w-xl mx-auto space-y-6"
         onSubmit={handleSubmit}
       >
         <input type="hidden" name="form-name" value="contact" />
-        <input type="hidden" name="bot-field" />
+        <p className="hidden">
+          <label>
+            Don't fill this out if you're human: <input name="bot-field" />
+          </label>
+        </p>
         
         <div>
           <label htmlFor="name" className="block text-lg font-medium mb-2">Name</label>
