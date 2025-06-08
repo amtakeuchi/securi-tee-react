@@ -2,54 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const ContactPage = () => {
-  const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
-
-  const encode = (data) => {
-    return Object.keys(data)
-      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-      .join("&");
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setError(null);
-    
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
-    
-    try {
-      console.log('Submitting form...');
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: encode({
-          'form-name': 'contact',
-          ...data
-        })
-      });
-
-      console.log('Response status:', response.status);
-      
-      if (response.ok) {
-        console.log('Form submitted successfully');
-        navigate('/thank-you');
-      } else {
-        const text = await response.text();
-        console.error('Form submission failed:', text);
-        setError('Failed to submit form. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setError('An error occurred. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   return (
     <section className="py-20 px-8">
@@ -62,12 +16,10 @@ const ContactPage = () => {
       <form 
         name="contact" 
         method="POST" 
-        netlify="true"
         data-netlify="true"
-        netlify-honeypot="bot-field"
         data-netlify-honeypot="bot-field"
+        action="/thank-you"
         className="max-w-xl mx-auto space-y-6"
-        onSubmit={handleSubmit}
       >
         <input type="hidden" name="form-name" value="contact" />
         <p className="hidden">
