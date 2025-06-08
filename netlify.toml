@@ -13,13 +13,13 @@
 
 [[redirects]]
   from = "/thank-you"
-  to = "/thank-you.html"
+  to = "/success.html"
   status = 200
   force = true
 
 [[redirects]]
   from = "/thank-you/"
-  to = "/thank-you.html"
+  to = "/success.html"
   status = 200
   force = true
 
@@ -27,7 +27,7 @@
   from = "/*"
   to = "/index.html"
   status = 200
-  conditions = {Path = {exclude = ["/thank-you.html"]}}
+  conditions = {Path = {exclude = ["/success.html"]}}
 
 [functions]
   node_bundler = "esbuild"
