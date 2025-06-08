@@ -15,7 +15,7 @@ const ContactPage = () => {
       <form 
         name="contact"
         method="POST"
-        action="/thank-you"
+        action="https://securi-tee-react.netlify.app/thank-you"
         netlify="true"
         netlify-honeypot="bot-field"
         className="max-w-xl mx-auto space-y-6"

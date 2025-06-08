@@ -8,7 +8,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        admin: resolve(__dirname, 'public/admin/index.html'),
+        thankyou: resolve(__dirname, 'public/thank-you.html'),
       },
     },
   },
