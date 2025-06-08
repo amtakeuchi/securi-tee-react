@@ -18,9 +18,16 @@
   force = true
 
 [[redirects]]
+  from = "/thank-you/"
+  to = "/thank-you.html"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  conditions = {Path = {exclude = ["/thank-you.html"]}}
 
 [functions]
   node_bundler = "esbuild"
