@@ -8,11 +8,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        success: resolve(__dirname, 'public/success.html'),
       },
     },
-    copyPublicDir: true,
-    assetsDir: 'assets',
   },
   server: {
     historyApiFallback: true,
