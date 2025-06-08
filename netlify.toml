@@ -3,17 +3,6 @@
   publish = "dist"
   functions = "netlify/functions"
 
-[build.environment]
-  NETLIFY_USE_YARN = "false"
-  NODE_VERSION = "20.11.1"
-  NPM_FLAGS = "--no-optional"
-
-[build.processing]
-  skip_processing = false
-
-[build.processing.html]
-  pretty_urls = true
-
 [dev]
   command = "npm run dev"
   port = 3000
@@ -22,6 +11,13 @@
   framework = "vite"
   autoLaunch = true
 
+# Specific redirect for thank-you page
+[[redirects]]
+  from = "/thank-you"
+  to = "/success.html"
+  status = 200
+
+# Fallback redirect for SPA
 [[redirects]]
   from = "/*"
   to = "/index.html"

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Securi-Tee</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            600: '#319795',
+                            700: '#2c7a7b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <section class="py-20 px-8 text-center">
+        <h2 class="text-4xl font-bold mb-6">Thank You!</h2>
+        <p class="text-xl mb-8">Your message has been received. We'll get back to you soon.</p>
+        <a 
+            href="/" 
+            class="inline-block bg-teal-600 text-white px-6 py-3 rounded-lg transition-colors duration-200 hover:bg-teal-700"
+        >
+            Return Home
+        </a>
+    </section>
+</body>
+</html> 

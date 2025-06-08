@@ -10,6 +10,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
       },
     },
+    copyPublicDir: true,
   },
   server: {
     historyApiFallback: true,
