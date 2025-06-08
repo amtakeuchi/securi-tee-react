@@ -6,7 +6,6 @@ import AboutPage from "./components/AboutPage";
 import ProjectListPage from "./components/ProjectListPage";
 import ContactPage from "./components/ContactPage";
 import BlogListPage from "./components/BlogListPage";
-import ThankYouPage from "./components/ThankYouPage";
 import NotFoundPage from "./components/NotFoundPage";
 import BlogPostPage from "./components/BlogPostPage";
 import ProjectPage from "./components/ProjectPage";
@@ -27,7 +26,6 @@ function App() {
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/blog" element={<BlogListPage />} />
               <Route path="/blog/:slug" element={<BlogPostPage />} />
-              <Route path="/thank-you" element={<ThankYouPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
