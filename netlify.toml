@@ -12,6 +12,11 @@
   autoLaunch = true
 
 [[redirects]]
+  from = "/thank-you"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
