@@ -11,17 +11,22 @@
   framework = "vite"
   autoLaunch = true
 
-# Specific redirect for thank-you page
 [[redirects]]
-  from = "/thank-you"
+  from = "/success.html"
   to = "/success.html"
   status = 200
 
-# Fallback redirect for SPA
+[[redirects]]
+  from = "/thank-you"
+  to = "/success.html"
+  status = 302
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = false
+  conditions = {Path = {exclude = ["/success.html"]}}
 
 [functions]
   node_bundler = "esbuild"
