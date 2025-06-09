@@ -12,35 +12,20 @@ const About = () => {
 
       <div className="space-y-4 text-lg leading-relaxed">
         <p>
-          If you want to learn more about me, check out the{' '}
-          <Link to="/about" className="text-blue-600 dark:text-blue-400 hover:underline">
-            About
-          </Link>{' '}
-          page.
+          If you want to learn more about me, check out the About page.
         </p>
 
         <p>
-          Want to read about my inner thoughts, insights, and solutions? Check out the{' '}
-          <Link to="/blog" className="text-blue-600 dark:text-blue-400 hover:underline">
-            Blog
-          </Link>{' '}
-          page.
+          Want to read about my inner thoughts, insights, and solutions? Check out the Blog page.
         </p>
 
         <p>
-          Want to see what I've been working on and learning about? Check out the{' '}
-          <Link to="/projects" className="text-blue-600 dark:text-blue-400 hover:underline">
-            Projects
-          </Link>{' '}
-          page.
+          Want to see what I've been working on and learning about? Check out the Projects page.
         </p>
 
         <p>
-          And if you want to get in touch, check out the{' '}
-          <Link to="/contact" className="text-blue-600 dark:text-blue-400 hover:underline">
-            Contact
-          </Link>{' '}
-          page, or click the LinkedIn icon at the bottom of the page and shoot me a message.
+          And if you want to get in touch, check out the Contact page, or click the LinkedIn icon at the bottom of the page 
+          and shoot me a message.
         </p>
       </div>
     </section>
