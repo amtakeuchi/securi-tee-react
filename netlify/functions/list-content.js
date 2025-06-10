@@ -26,7 +26,9 @@ exports.handler = async (event) => {
     console.log('Public directory exists:', fs.existsSync(basePublicPath));
 
     try {
-      console.log('Public directory contents:', fs.readdirSync(basePublicPath));
+      const publicContents = fs.readdirSync(basePublicPath);
+      console.log('Public directory contents:', publicContents);
+      console.log('Public directory has projects folder:', publicContents.includes('projects'));
     } catch (err) {
       console.error('Error reading public directory:', err);
     }
@@ -44,8 +46,11 @@ exports.handler = async (event) => {
         console.log('Reading directory:', contentDir);
         const dirContents = fs.readdirSync(contentDir);
         console.log('Directory contents:', dirContents);
+        console.log('Number of files found:', dirContents.length);
 
         for (const file of dirContents) {
+          console.log('Processing file:', file);
+          
           if (!file.endsWith('.md')) {
             console.log(`Skipping non-markdown file: ${file}`);
             continue;
@@ -54,7 +59,11 @@ exports.handler = async (event) => {
           try {
             const filePath = path.join(contentDir, file);
             console.log('Reading file:', filePath);
+            console.log('File exists:', fs.existsSync(filePath));
+            console.log('File stats:', fs.statSync(filePath));
+            
             const content = fs.readFileSync(filePath, 'utf8');
+            console.log('Successfully read file content, length:', content.length);
             
             // Normalize line endings
             const normalizedContent = content.replace(/\r\n/g, '\n');
@@ -106,6 +115,7 @@ exports.handler = async (event) => {
                 path: path.join(type, file),
                 location: type
               });
+              console.log('Successfully added file to allFiles array');
             } else {
               console.log('No frontmatter found in standard format for file:', file);
               // Fallback for files without frontmatter
@@ -123,16 +133,21 @@ exports.handler = async (event) => {
                 path: path.join(type, file),
                 location: type
               });
+              console.log('Successfully added file to allFiles array (no frontmatter)');
             }
           } catch (err) {
             console.error(`Error processing file ${file}:`, err);
           }
         }
+      } else {
+        console.log('Content directory does not exist:', contentDir);
       }
     } catch (err) {
       console.error(`Error reading directory ${contentDir}:`, err);
       throw err;
     }
+
+    console.log('Total files processed:', allFiles.length);
 
     // Sort files by date if available, then by filename
     allFiles.sort((a, b) => {
@@ -171,7 +186,8 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({ 
         error: 'Internal server error',
-        details: error.message 
+        details: error.message,
+        stack: error.stack
       })
     };
   }
