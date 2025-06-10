@@ -5,7 +5,15 @@ import { resolve } from 'path';
 export default defineConfig({
   plugins: [
     react({
-      jsxRuntime: 'classic'
+      jsxRuntime: 'classic',
+      jsxImportSource: 'react',
+      include: "**/*.{jsx,tsx}",
+      exclude: ["**/node_modules/**"],
+      babel: {
+        presets: [
+          ['@babel/preset-react', { runtime: 'classic' }]
+        ]
+      }
     })
   ],
   resolve: {
@@ -20,29 +28,23 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html')
       },
-      external: [],
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'vendor': ['react', 'react-dom', 'react-router-dom'],
+          'app': ['/src/main.jsx']
         }
       }
     },
-    minify: 'esbuild',
+    minify: false,
     sourcemap: true
   },
   server: {
     historyApiFallback: true,
   },
   optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react-router-dom'
-    ],
-    esbuildOptions: {
-      target: 'esnext'
-    }
+    include: ['react', 'react-dom', 'react-router-dom'],
+    force: true
   },
   publicDir: 'public',
-  base: '/',
+  base: '/'
 });
