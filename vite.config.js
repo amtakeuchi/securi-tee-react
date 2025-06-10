@@ -21,6 +21,12 @@ export default defineConfig({
   server: {
     historyApiFallback: true,
   },
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
+    esbuildOptions: {
+      target: 'esnext',
+    },
+  },
   publicDir: 'public',
   base: '/',
 });
