@@ -1,10 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 import { ThemeProvider } from './context/ThemeContext';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+// Ensure React is available globally (development aid)
+window.React = React;
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+root.render(
   <React.StrictMode>
     <ThemeProvider>
       <App />

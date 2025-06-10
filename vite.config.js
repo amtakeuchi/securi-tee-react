@@ -11,12 +11,21 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
       },
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-        },
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('react/') || id.includes('react-dom/')) {
+              return 'react-vendor';
+            }
+            return 'vendor';
+          }
+        }
       }
     },
-    copyPublicDir: true,
+    commonjsOptions: {
+      esmExternals: true,
+    },
+    target: 'esnext',
+    minify: 'esbuild',
   },
   server: {
     historyApiFallback: true,
