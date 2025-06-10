@@ -55,7 +55,7 @@ const ProjectListPage = () => {
   if (loading) {
     return (
       <div className="p-8">
-        <h1 className="text-4xl font-bold mb-8">Projects</h1>
+        <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-white">Projects</h1>
         <div className="space-y-8">
           {[1, 2, 3].map((n) => (
             <div key={n} className="animate-pulse">
@@ -72,7 +72,7 @@ const ProjectListPage = () => {
   if (error) {
     return (
       <div className="p-8">
-        <h1 className="text-4xl font-bold mb-8">Projects</h1>
+        <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-white">Projects</h1>
         <div className="bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-100 px-4 py-3 rounded">
           <p className="font-bold">Error Loading Projects</p>
           <p>{error}</p>
@@ -89,7 +89,7 @@ const ProjectListPage = () => {
 
   return (
     <div className="p-8">
-      <h1 className="text-4xl font-bold mb-8">Projects</h1>
+      <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-white">Projects</h1>
       {projects.length === 0 ? (
         <p className="text-gray-600 dark:text-gray-400">No projects found.</p>
       ) : (
@@ -98,7 +98,7 @@ const ProjectListPage = () => {
             <Link
               key={project.filename}
               to={`/projects/${project.filename}`}
-              className="block bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
+              className="block bg-gray-100 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
             >
               {project.thumbnail && (
                 <div className="h-48 rounded-t-lg overflow-hidden">
@@ -114,14 +114,14 @@ const ProjectListPage = () => {
                 </div>
               )}
               <div className="p-6">
-                <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">{project.title}</h2>
+                <h2 className="text-xl font-semibold mb-2 text-gray-900">{project.title}</h2>
                 {project.date && (
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
+                  <p className="text-gray-600 text-sm mb-2">
                     {new Date(project.date).toLocaleDateString()}
                   </p>
                 )}
                 {project.description && (
-                  <p className="text-gray-600 dark:text-gray-400">{project.description}</p>
+                  <p className="text-gray-600">{project.description}</p>
                 )}
               </div>
             </Link>

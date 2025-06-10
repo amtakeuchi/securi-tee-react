@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 const About = () => {
   return (
     <section className="max-w-4xl mx-auto px-6 py-16">
-      <h1 className="text-4xl font-bold mb-8">Welcome!</h1>
+      <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-white">Welcome!</h1>
       
-      <p className="text-lg leading-relaxed mb-8">
+      <p className="text-lg leading-relaxed mb-8 text-gray-700 dark:text-gray-300">
         This is my digital workspace, where I document cybersecurity projects, share insights about emerging threats, 
         and explore solutions to real-world IT challenges.
       </p>
 
-      <div className="space-y-4 text-lg leading-relaxed">
+      <div className="space-y-4 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
         <p>
           If you want to learn more about me, check out the About page.
         </p>

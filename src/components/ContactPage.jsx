@@ -6,7 +6,7 @@ const ContactPage = () => {
 
   return (
     <section className="py-20 px-8">
-      <h2 className="text-4xl font-bold mb-6 text-center">Contact</h2>
+      <h2 className="text-4xl font-bold mb-6 text-center text-gray-900 dark:text-white">Contact</h2>
       {error && (
         <div className="max-w-xl mx-auto mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
           {error}
@@ -26,7 +26,7 @@ const ContactPage = () => {
         </p>
         
         <div>
-          <label htmlFor="name" className="block text-lg font-medium mb-2">Name</label>
+          <label htmlFor="name" className="block text-lg font-medium mb-2 text-gray-900 dark:text-white">Name</label>
           <input 
             type="text" 
             id="name" 
@@ -37,7 +37,7 @@ const ContactPage = () => {
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-lg font-medium mb-2">Email</label>
+          <label htmlFor="email" className="block text-lg font-medium mb-2 text-gray-900 dark:text-white">Email</label>
           <input 
             type="email" 
             id="email" 
@@ -48,7 +48,7 @@ const ContactPage = () => {
         </div>
 
         <div>
-          <label htmlFor="message" className="block text-lg font-medium mb-2">Message</label>
+          <label htmlFor="message" className="block text-lg font-medium mb-2 text-gray-900 dark:text-white">Message</label>
           <textarea 
             id="message" 
             name="message" 

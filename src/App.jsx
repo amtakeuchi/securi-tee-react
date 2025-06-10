@@ -14,9 +14,9 @@ import NotFoundPage from "./components/NotFoundPage";
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen dark:bg-gray-900">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-gray-800">
       <Header />
-      <main className="flex-grow container mx-auto px-4 py-8">
+      <main className="flex-grow">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
