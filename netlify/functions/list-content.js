@@ -19,23 +19,11 @@ exports.handler = async (event) => {
       };
     }
 
-    // In Netlify Functions, we need to look for the files relative to the function's root
-    const basePublicPath = path.join(__dirname, '..', '..', 'public');
-    console.log('Current working directory:', process.cwd());
-    console.log('Function directory:', __dirname);
-    console.log('Base public path:', basePublicPath);
-    console.log('Public directory exists:', fs.existsSync(basePublicPath));
-
-    try {
-      const publicContents = fs.readdirSync(basePublicPath);
-      console.log('Public directory contents:', publicContents);
-      console.log('Public directory has projects folder:', publicContents.includes('projects'));
-    } catch (err) {
-      console.error('Error reading public directory:', err);
-    }
-
-    // Only look in the correct directories as specified in config.yml
+    // In Netlify Functions, we need to look for the files in the publish directory
+    const basePublicPath = path.join(process.cwd(), 'public');
     const contentDir = path.join(basePublicPath, type);
+    
+    console.log('Current working directory:', process.cwd());
     console.log('Content directory to check:', contentDir);
     console.log(`Directory ${contentDir} exists:`, fs.existsSync(contentDir));
     
@@ -50,8 +38,6 @@ exports.handler = async (event) => {
         console.log('Number of files found:', dirContents.length);
 
         for (const file of dirContents) {
-          console.log('Processing file:', file);
-          
           if (!file.endsWith('.md')) {
             console.log(`Skipping non-markdown file: ${file}`);
             continue;
@@ -60,37 +46,24 @@ exports.handler = async (event) => {
           try {
             const filePath = path.join(contentDir, file);
             console.log('Reading file:', filePath);
-            console.log('File exists:', fs.existsSync(filePath));
-            console.log('File stats:', fs.statSync(filePath));
             
             const content = fs.readFileSync(filePath, 'utf8');
-            console.log('Successfully read file content, length:', content.length);
-            
-            // Normalize line endings
             const normalizedContent = content.replace(/\r\n/g, '\n');
             
-            console.log('File content starts with:', normalizedContent.substring(0, 100).replace(/\n/g, '\\n'));
-
-            // Parse frontmatter with exact format matching
-            const frontMatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
-            const match = normalizedContent.match(frontMatterRegex);
+            // Parse frontmatter
+            const frontMatterMatch = normalizedContent.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
             
-            if (match) {
-              console.log('Found frontmatter for file:', file);
-              const [, frontMatter, postContent] = match;
-              
-              // Parse frontmatter into metadata
+            if (frontMatterMatch) {
+              const [, frontMatter, postContent] = frontMatterMatch;
               const metadata = {};
-              const frontMatterLines = frontMatter.split('\n');
               
-              frontMatterLines.forEach(line => {
+              frontMatter.split('\n').forEach(line => {
                 const trimmedLine = line.trim();
                 if (trimmedLine && !trimmedLine.startsWith('#')) {
                   const colonIndex = trimmedLine.indexOf(':');
                   if (colonIndex !== -1) {
                     const key = trimmedLine.slice(0, colonIndex).trim();
                     let value = trimmedLine.slice(colonIndex + 1).trim();
-                    // Remove quotes if they exist
                     if (value.startsWith('"') && value.endsWith('"')) {
                       value = value.slice(1, -1);
                     }
@@ -99,9 +72,6 @@ exports.handler = async (event) => {
                 }
               });
 
-              console.log('Parsed metadata for file:', file, metadata);
-
-              // Get the first paragraph of content for preview if no description
               if (!metadata.description) {
                 const preview = postContent
                   .split('\n')
@@ -116,10 +86,7 @@ exports.handler = async (event) => {
                 path: path.join(type, file),
                 location: type
               });
-              console.log('Successfully added file to allFiles array');
             } else {
-              console.log('No frontmatter found in standard format for file:', file);
-              // Fallback for files without frontmatter
               const titleMatch = normalizedContent.match(/^#\s+(.*)$/m);
               const title = titleMatch ? titleMatch[1] : file.replace('.md', '');
               const preview = normalizedContent
@@ -134,7 +101,6 @@ exports.handler = async (event) => {
                 path: path.join(type, file),
                 location: type
               });
-              console.log('Successfully added file to allFiles array (no frontmatter)');
             }
           } catch (err) {
             console.error(`Error processing file ${file}:`, err);
@@ -148,8 +114,6 @@ exports.handler = async (event) => {
       throw err;
     }
 
-    console.log('Total files processed:', allFiles.length);
-
     // Sort files by date if available, then by filename
     allFiles.sort((a, b) => {
       if (a.date && b.date) return new Date(b.date) - new Date(a.date);
@@ -157,13 +121,6 @@ exports.handler = async (event) => {
       if (b.date) return 1;
       return a.filename.localeCompare(b.filename);
     });
-
-    console.log('Final files to return:', allFiles.map(f => ({ 
-      filename: f.filename, 
-      title: f.title,
-      hasContent: !!f.content,
-      contentLength: f.content ? f.content.length : 0
-    })));
 
     return {
       statusCode: 200,
