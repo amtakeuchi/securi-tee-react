@@ -7,7 +7,7 @@ const ProjectPage = () => {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    fetch(`/content/projects/${slug}.md`)
+    fetch(`/projects/${slug}.md`)
       .then((res) => {
         if (!res.ok) throw new Error("Project not found");
         return res.text();
