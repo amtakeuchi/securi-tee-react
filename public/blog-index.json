@@ -1,24 +1,10 @@
 [
   {
-    "filename": "hello-world",
-    "title": "Hello World",
-    "date": "2025-06-05T04:23:12.846Z",
-    "description": "This is a sample blog post to test the functionality of our blog system.",
-    "thumbnail": null
-  },
-  {
-    "filename": "test2",
-    "title": "Test2",
-    "date": "2025-06-03T14:13:00.000Z",
-    "description": "Test2",
-    "thumbnail": "/images/uploads/cleancyberthreatfeedss.jpg"
-  },
-  {
-    "filename": "new-test",
-    "title": "New Test",
-    "date": "2025-06-03T13:50:00.000Z",
-    "description": "Blah blah blah test",
-    "thumbnail": "/images/uploads/cleancyberthreatfeedss.jpg"
+    "filename": "why-my-diy-website-almost-drove-me-insane-and-why-i’d-do-it-again",
+    "title": "Why My DIY Website Almost Drove Me Insane - And Why I’d Do It Again",
+    "date": "2025-05-26T18:04:00.000Z",
+    "description": "F﻿irst, let me start this off by saying, I have zero clue how to blog. I don’t know how I’m supposed to write, how long my posts are supposed to be, if there’s some sort of standards to meet or something, no idea. I’m not a professional blogger.",
+    "thumbnail": "/images/uploads/mangoinginsaneforblog.jpeg"
   },
   {
     "filename": "welcome-to-my-cybersecurity-blog",
