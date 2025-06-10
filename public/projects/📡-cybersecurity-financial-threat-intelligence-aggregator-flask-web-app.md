@@ -1,6 +1,6 @@
 ---
 title: 📡 Cybersecurity & Financial Threat Intelligence Aggregator (Flask Web App)
-date: 2025-04-15T12:00:00.000Z
+date: 2025-05-23T00:00:00.000Z
 thumbnail: /images/uploads/cleancyberthreatfeedss.jpg
 ---
 This is a custom-built Flask web application I designed to scrape and collect the latest headlines and alerts from across the cybersecurity, finance, cryptocurrency, geopolitics, crime, and world news ecosystems. It serves as a centralized dashboard for monitoring breaking news, active cyber threats, financial market movements, and geopolitical events relevant to incident response, penetration testing, cloud infrastructure security, and strategic risk monitoring.
@@ -21,9 +21,8 @@ This Flask web app combines:
 * Asynchronous feed fetching with Python’s ThreadPoolExecutor to pull multiple feeds and scrapes in parallel, without blocking the server
 * Keyword-based filtering to surface only high-priority articles
 * Caching with Flask-Caching to improve performance and avoid hammering the same endpoints every few minutes
-*
 
-The result is a clean, lightweight web dashboard that shows me the latest threat intelligence and financial risk signals in near real-time — tailored specifically for the work I do.
+The result is a clean, lightweight web dashboard that shows me the latest threat intelligence and financial risk signals in near real-time, tailored specifically for what I do.
 
 📊 Why This Matters
 
