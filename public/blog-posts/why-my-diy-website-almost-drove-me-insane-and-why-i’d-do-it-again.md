@@ -2,6 +2,7 @@
 title: Why My DIY Website Almost Drove Me Insane - And Why I’d Do It Again
 date: 2025-05-26T18:04:00.000Z
 image: /images/uploads/mangoinginsaneforblog.jpeg
+thumbnail: /images/uploads/mangoinginsaneforblog.jpeg
 ---
 F﻿irst, let me start this off by saying, I have zero clue how to blog. I don’t know how I’m supposed to write, how long my posts are supposed to be, if there’s some sort of standards to meet or something, no idea. I’m not a professional blogger.
 
