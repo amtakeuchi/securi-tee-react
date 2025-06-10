@@ -12,22 +12,37 @@ const ProjectListPage = () => {
         setLoading(true);
         setError(null);
         
+        console.log('Fetching projects...');
         const response = await fetch('/.netlify/functions/list-content?type=projects');
+        console.log('Response status:', response.status);
+        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
         
         if (!response.ok) {
           const errorText = await response.text();
           console.error('Error response:', errorText);
+          try {
+            // Try to parse error as JSON
+            const errorJson = JSON.parse(errorText);
+            console.error('Parsed error details:', errorJson);
+          } catch (e) {
+            // If not JSON, that's fine
+            console.error('Raw error text:', errorText);
+          }
           throw new Error(`Failed to fetch projects: ${response.status} ${response.statusText}`);
         }
         
         const data = await response.json();
+        console.log('Received projects data:', data);
+        
         if (!Array.isArray(data)) {
+          console.error('Invalid data format:', data);
           throw new Error('Invalid response format: expected an array of projects');
         }
         
         setProjects(data);
       } catch (err) {
         console.error('Error loading projects:', err);
+        console.error('Error stack:', err.stack);
         setError(err.message || 'Failed to load projects. Please try again later.');
       } finally {
         setLoading(false);
