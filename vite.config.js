@@ -3,28 +3,19 @@ import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react({
+      jsxRuntime: 'automatic',
+      fastRefresh: false,
+    })
+  ],
   build: {
     outDir: 'dist',
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-      },
-      output: {
-        manualChunks: (id) => {
-          if (id.includes('node_modules')) {
-            if (id.includes('react/') || id.includes('react-dom/')) {
-              return 'react-vendor';
-            }
-            return 'vendor';
-          }
-        }
       }
     },
-    commonjsOptions: {
-      esmExternals: true,
-    },
-    target: 'esnext',
     minify: 'esbuild',
   },
   server: {
