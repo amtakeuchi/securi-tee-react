@@ -3,13 +3,8 @@ const path = require('path');
 
 exports.handler = async (event) => {
   try {
-    console.log('Function environment:', {
-      cwd: process.cwd(),
-      nodeEnv: process.env.NODE_ENV,
-      netlifyDevMode: process.env.NETLIFY_DEV === 'true'
-    });
-
     const { type } = event.queryStringParameters;
+    console.log('Content type requested:', type);
     
     if (!type || !['blog-posts', 'projects'].includes(type)) {
       return {
@@ -26,13 +21,19 @@ exports.handler = async (event) => {
 
     // Define the content directory based on type
     const basePublicPath = path.join(process.cwd(), 'public');
+    console.log('Current working directory:', process.cwd());
     console.log('Base public path:', basePublicPath);
     console.log('Public directory exists:', fs.existsSync(basePublicPath));
+    console.log('Public directory contents:', fs.readdirSync(basePublicPath));
 
     // Only look in the correct directories as specified in config.yml
     const contentDir = path.join(basePublicPath, type);
     console.log('Content directory to check:', contentDir);
     console.log(`Directory ${contentDir} exists:`, fs.existsSync(contentDir));
+    
+    if (fs.existsSync(contentDir)) {
+      console.log('Content directory contents:', fs.readdirSync(contentDir));
+    }
 
     let allFiles = [];
 
@@ -44,7 +45,11 @@ exports.handler = async (event) => {
         console.log('Directory contents:', dirContents);
 
         const files = dirContents
-          .filter(file => file.endsWith('.md'))
+          .filter(file => {
+            const isMarkdown = file.endsWith('.md');
+            console.log(`File ${file} is markdown:`, isMarkdown);
+            return isMarkdown;
+          })
           .map(file => {
             const filePath = path.join(contentDir, file);
             try {
@@ -65,7 +70,7 @@ exports.handler = async (event) => {
               const match = content.match(frontMatterRegex);
               
               if (match) {
-                console.log('Found frontmatter');
+                console.log('Found frontmatter for file:', file);
                 const [, frontMatter, postContent] = match;
                 
                 // Parse frontmatter into metadata
@@ -88,7 +93,7 @@ exports.handler = async (event) => {
                   }
                 });
 
-                console.log('Parsed metadata:', metadata);
+                console.log('Parsed metadata for file:', file, metadata);
 
                 // Get the first paragraph of content for preview if no description
                 if (!metadata.description) {
@@ -107,7 +112,7 @@ exports.handler = async (event) => {
                 };
               }
 
-              console.log('No frontmatter found in standard format, trying alternative parsing');
+              console.log('No frontmatter found in standard format for file:', file);
               // Fallback for files without frontmatter
               const titleMatch = content.match(/^#\s+(.*)$/m);
               const title = titleMatch ? titleMatch[1] : file.replace('.md', '');
@@ -131,6 +136,7 @@ exports.handler = async (event) => {
           .filter(file => file !== null);
 
         allFiles = [...allFiles, ...files];
+        console.log('Processed files:', allFiles.map(f => f.filename));
       }
     } catch (err) {
       console.error(`Error reading directory ${contentDir}:`, err);
@@ -144,7 +150,7 @@ exports.handler = async (event) => {
       return a.filename.localeCompare(b.filename);
     });
 
-    console.log('Returning files:', allFiles.map(f => ({ 
+    console.log('Final files to return:', allFiles.map(f => ({ 
       filename: f.filename, 
       title: f.title,
       hasContent: !!f.content,
