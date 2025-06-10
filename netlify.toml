@@ -25,6 +25,7 @@
 
 [functions]
   node_bundler = "esbuild"
+  included_files = ["public/**"]
 
 [[headers]]
   for = "/*"

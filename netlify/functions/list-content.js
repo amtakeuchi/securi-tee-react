@@ -19,9 +19,10 @@ exports.handler = async (event) => {
       };
     }
 
-    // Define the content directory based on type
-    const basePublicPath = path.join(process.cwd(), 'public');
+    // In Netlify Functions, we need to look for the files relative to the function's root
+    const basePublicPath = path.join(__dirname, '..', '..', 'public');
     console.log('Current working directory:', process.cwd());
+    console.log('Function directory:', __dirname);
     console.log('Base public path:', basePublicPath);
     console.log('Public directory exists:', fs.existsSync(basePublicPath));
 
