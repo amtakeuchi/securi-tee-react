@@ -1,10 +1,10 @@
 [build]
-  command = "npm run build"
+  command = "npm install @rollup/rollup-linux-x64-gnu@4.9.0 && npm run build"
   publish = "dist"
   
 [build.environment]
   NODE_VERSION = "20"
-  NPM_FLAGS = "--no-optional"
+  NPM_FLAGS = "--platform=linux --arch=x64"
 
 [dev]
   command = "npm run dev"
