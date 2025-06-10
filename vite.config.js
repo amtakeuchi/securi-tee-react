@@ -5,27 +5,44 @@ import { resolve } from 'path';
 export default defineConfig({
   plugins: [
     react({
-      jsxRuntime: 'automatic',
-      fastRefresh: false,
+      jsxRuntime: 'classic',
+      fastRefresh: false
     })
   ],
+  resolve: {
+    alias: {
+      'react': resolve(__dirname, 'node_modules/react'),
+      'react-dom': resolve(__dirname, 'node_modules/react-dom')
+    }
+  },
   build: {
     outDir: 'dist',
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
+        main: resolve(__dirname, 'index.html')
+      },
+      external: [],
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+        }
       }
     },
     minify: 'esbuild',
+    sourcemap: true
   },
   server: {
     historyApiFallback: true,
   },
   optimizeDeps: {
-    include: ['react', 'react-dom'],
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom'
+    ],
     esbuildOptions: {
-      target: 'esnext',
-    },
+      target: 'esnext'
+    }
   },
   publicDir: 'public',
   base: '/',
