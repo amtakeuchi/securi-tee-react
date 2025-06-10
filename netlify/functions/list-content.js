@@ -24,123 +24,116 @@ exports.handler = async (event) => {
       };
     }
 
-    // Define possible content directories and check if they exist
+    // Define the content directory based on type
     const basePublicPath = path.join(process.cwd(), 'public');
     console.log('Base public path:', basePublicPath);
     console.log('Public directory exists:', fs.existsSync(basePublicPath));
 
-    const contentDirs = [
-      path.join(basePublicPath, type),
-      path.join(basePublicPath, 'content', type === 'blog-posts' ? 'blog' : 'projects')
-    ];
-
-    console.log('Content directories to check:', contentDirs);
-    contentDirs.forEach(dir => {
-      console.log(`Directory ${dir} exists:`, fs.existsSync(dir));
-    });
+    // Only look in the correct directories as specified in config.yml
+    const contentDir = path.join(basePublicPath, type);
+    console.log('Content directory to check:', contentDir);
+    console.log(`Directory ${contentDir} exists:`, fs.existsSync(contentDir));
 
     let allFiles = [];
 
-    // Try to read files from each possible directory
-    for (const dir of contentDirs) {
-      try {
-        if (fs.existsSync(dir)) {
-          console.log('Reading directory:', dir);
-          const dirContents = fs.readdirSync(dir);
-          console.log('Directory contents:', dirContents);
+    // Try to read files from the directory
+    try {
+      if (fs.existsSync(contentDir)) {
+        console.log('Reading directory:', contentDir);
+        const dirContents = fs.readdirSync(contentDir);
+        console.log('Directory contents:', dirContents);
 
-          const files = dirContents
-            .filter(file => file.endsWith('.md'))
-            .map(file => {
-              const filePath = path.join(dir, file);
-              try {
-                console.log('Reading file:', filePath);
-                let content = fs.readFileSync(filePath, 'utf8');
-                
-                // Normalize line endings
-                content = content.replace(/\r\n/g, '\n');
-                
-                console.log('File content starts with:', content.substring(0, 100).replace(/\n/g, '\\n'));
+        const files = dirContents
+          .filter(file => file.endsWith('.md'))
+          .map(file => {
+            const filePath = path.join(contentDir, file);
+            try {
+              console.log('Reading file:', filePath);
+              let content = fs.readFileSync(filePath, 'utf8');
+              
+              // Normalize line endings
+              content = content.replace(/\r\n/g, '\n');
+              
+              console.log('File content starts with:', content.substring(0, 100).replace(/\n/g, '\\n'));
 
-                // Determine the correct path for the file
-                const relativePath = path.relative(basePublicPath, dir);
-                const fileLocation = path.join(relativePath, file);
+              // Determine the correct path for the file
+              const relativePath = path.relative(basePublicPath, contentDir);
+              const fileLocation = path.join(relativePath, file);
 
-                // Parse frontmatter with exact format matching
-                const frontMatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
-                const match = content.match(frontMatterRegex);
+              // Parse frontmatter with exact format matching
+              const frontMatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+              const match = content.match(frontMatterRegex);
+              
+              if (match) {
+                console.log('Found frontmatter');
+                const [, frontMatter, postContent] = match;
                 
-                if (match) {
-                  console.log('Found frontmatter');
-                  const [, frontMatter, postContent] = match;
-                  
-                  // Parse frontmatter into metadata
-                  const metadata = {};
-                  const frontMatterLines = frontMatter.split('\n');
-                  
-                  frontMatterLines.forEach(line => {
-                    const trimmedLine = line.trim();
-                    if (trimmedLine && !trimmedLine.startsWith('#')) {
-                      const colonIndex = trimmedLine.indexOf(':');
-                      if (colonIndex !== -1) {
-                        const key = trimmedLine.slice(0, colonIndex).trim();
-                        let value = trimmedLine.slice(colonIndex + 1).trim();
-                        // Remove quotes if they exist
-                        if (value.startsWith('"') && value.endsWith('"')) {
-                          value = value.slice(1, -1);
-                        }
-                        metadata[key] = value;
+                // Parse frontmatter into metadata
+                const metadata = {};
+                const frontMatterLines = frontMatter.split('\n');
+                
+                frontMatterLines.forEach(line => {
+                  const trimmedLine = line.trim();
+                  if (trimmedLine && !trimmedLine.startsWith('#')) {
+                    const colonIndex = trimmedLine.indexOf(':');
+                    if (colonIndex !== -1) {
+                      const key = trimmedLine.slice(0, colonIndex).trim();
+                      let value = trimmedLine.slice(colonIndex + 1).trim();
+                      // Remove quotes if they exist
+                      if (value.startsWith('"') && value.endsWith('"')) {
+                        value = value.slice(1, -1);
                       }
+                      metadata[key] = value;
                     }
-                  });
-
-                  console.log('Parsed metadata:', metadata);
-
-                  // Get the first paragraph of content for preview if no description
-                  if (!metadata.description) {
-                    const preview = postContent
-                      .split('\n')
-                      .find(line => line.trim().length > 0) || '';
-                    metadata.description = preview.slice(0, 150) + '...';
                   }
+                });
 
-                  return {
-                    filename: file,
-                    ...metadata,
-                    content: postContent.trim(),
-                    path: fileLocation,
-                    location: relativePath
-                  };
-                } else {
-                  console.log('No frontmatter found in standard format, trying alternative parsing');
-                  // Fallback for files without frontmatter
-                  const titleMatch = content.match(/^#\s+(.*)$/m);
-                  const title = titleMatch ? titleMatch[1] : file.replace('.md', '');
-                  const preview = content
+                console.log('Parsed metadata:', metadata);
+
+                // Get the first paragraph of content for preview if no description
+                if (!metadata.description) {
+                  const preview = postContent
                     .split('\n')
-                    .find(line => line.trim().length > 0 && !line.startsWith('#')) || '';
-
-                  return {
-                    filename: file,
-                    title,
-                    content: content.trim(),
-                    description: preview.slice(0, 150) + '...',
-                    path: fileLocation,
-                    location: relativePath
-                  };
+                    .find(line => line.trim().length > 0) || '';
+                  metadata.description = preview.slice(0, 150) + '...';
                 }
-              } catch (err) {
-                console.error(`Error processing file ${file}:`, err);
-                return null;
-              }
-            })
-            .filter(file => file !== null);
 
-          allFiles = [...allFiles, ...files];
-        }
-      } catch (err) {
-        console.error(`Error reading directory ${dir}:`, err);
+                return {
+                  filename: file.replace('.md', ''),
+                  ...metadata,
+                  content: postContent.trim(),
+                  path: fileLocation,
+                  location: relativePath
+                };
+              }
+
+              console.log('No frontmatter found in standard format, trying alternative parsing');
+              // Fallback for files without frontmatter
+              const titleMatch = content.match(/^#\s+(.*)$/m);
+              const title = titleMatch ? titleMatch[1] : file.replace('.md', '');
+              const preview = content
+                .split('\n')
+                .find(line => line.trim().length > 0 && !line.startsWith('#')) || '';
+
+              return {
+                filename: file.replace('.md', ''),
+                title,
+                content: content.trim(),
+                description: preview.slice(0, 150) + '...',
+                path: fileLocation,
+                location: relativePath
+              };
+            } catch (err) {
+              console.error(`Error processing file ${file}:`, err);
+              return null;
+            }
+          })
+          .filter(file => file !== null);
+
+        allFiles = [...allFiles, ...files];
       }
+    } catch (err) {
+      console.error(`Error reading directory ${contentDir}:`, err);
     }
 
     // Sort files by date if available, then by filename
@@ -169,7 +162,7 @@ exports.handler = async (event) => {
       body: JSON.stringify(allFiles)
     };
   } catch (error) {
-    console.error('Error listing content:', error);
+    console.error('Function error:', error);
     return {
       statusCode: 500,
       headers: {
@@ -178,12 +171,7 @@ exports.handler = async (event) => {
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Methods': 'GET'
       },
-      body: JSON.stringify({ 
-        error: 'Failed to list content',
-        details: error.message,
-        stack: error.stack,
-        cwd: process.cwd()
-      })
+      body: JSON.stringify({ error: 'Internal server error' })
     };
   }
 }; 
