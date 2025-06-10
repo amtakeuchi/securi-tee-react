@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 const ContactPage = () => {
   const [submitting, setSubmitting] = useState(false);
