@@ -19,7 +19,7 @@ collections:
 
   - name: "projects"
     label: "Projects"
-    folder: "public/content/projects"
+    folder: "public/projects"
     create: true
     slug: "{{slug}}"
     fields:
